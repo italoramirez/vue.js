@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Listado de Útiles</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="main.css">
+</head>
+<body>
+    
+    <div id="app" class="container">
+        <div class="hrader">
+            <h1>{{ header ? header : 'Bienvenido' }}</h1>
+            <button v-if="estado === 'default'" class="btn btn-primary" @click="cambiarEstado('edit')">Agregar</button>
+            <button v-else class="btn btn-info" @click="cambiarEstado('default')">Cancelar</button>
+        </div>
+        <div v-if="estado === 'edit'">
+            <input type="text" name="" id="" placeholder="Agregar nuevo" @keyup.enter="guardarElemento" v-model="newUtil">
+            <!-- <p>{{ cantidadCaracteres }}/200</p> -->
+            <button class="btn btn-primary" v-bind:disabled="newUtil.length === 0" @click="guardarElemento">Guardar</button>
+        </div>
+        <!-- diretiva b-bind
+        <a href="" v-bind:href="newUtil" target="_blank">Enlace dinámico</a> -->
+        <ul>
+            <!-- <li v-for="util in utiles" :class="{tachado : util.comprado}" @click="cambiarEstadocompra(util)"> -->
+            <li v-for="util in listarReversa" :class="{tachado : util.comprado}" @click="cambiarEstadocompra(util)">
+                {{ util.util }}
+            </li>
+            <p v-if="utiles.length === 0 ">
+                No esxiten elementos en la lista
+            </p>
+        </ul>
+    </div>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script> -->
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script>
+        const app = new Vue({
+            el: '#app',
+            data: {
+                header: 'listado de útiles',
+                newUtil: '',
+                estado: 'default',
+                utiles: [
+                    {
+                        util    : '10 cuadernos',
+                        comprado: true
+                    },
+                    {
+                        util    : '15 lápices',
+                        comprado: true
+                    },
+                    {
+                        util    : '5 cajas de colores',
+                        comprado: false
+                    }
+                    // '10 cuadernos',
+                    // '15 lápices',
+                    // '5 cajas de colores'
+                ]
+            },
+            computed: {
+                listarReversa: function () {
+                    return this.utiles.slice(0).reverse();
+                }
+                // cantidadCaracteres: function () {
+                //     return this.newUtil.length;
+                // }
+            },
+            methods: {
+                guardarElemento: function () {
+                    // this.utiles.push(this.newUtil);
+                    this.utiles.push({
+                        util    :this.newUtil, 
+                        comprado: false
+                    });
+                    this.newUtil = ''
+                },
+                cambiarEstado: function ( newEstado ) {
+                    this.estado = newEstado;
+                    this.newUtil = ''
+                },
+                cambiarEstadocompra: function ( util ) {
+                    util.comprado = !util.comprado;
+                }
+            },
+        })
+    </script>
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <!-- Popper JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
+
+<!-- apuntes
+instancia de vue
+$vm0.utiles
+
+
+
+-->
